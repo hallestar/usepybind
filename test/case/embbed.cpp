@@ -14,10 +14,13 @@
 #include <pybind11/pytypes.h>
 #include <pybind11/detail/common.h>
 
+#include "../../src/core/pybroker.h"
+
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
 #define MAX_ENV_VAR_LEN 256
+
 
 namespace py = pybind11;
 
@@ -123,21 +126,6 @@ PYBIND11_EMBEDDED_MODULE(tester, m) {
 //private:
 //};
 
-bool InitPythonPath() {
-    using namespace py::literals;
-    uint32_t requireSize = 0;
-    const char *szScriptPath = getenv("SCRIPT_PATH");
-    if (!szScriptPath) {
-        return false;
-    }
-
-    auto sysModule = py::module_::import("sys");
-    auto sysPath = sysModule.attr("path");
-    auto append = sysPath.attr("append");
-    append(szScriptPath);
-
-    return true;
-}
 
 int main() {
     using namespace py::literals;
