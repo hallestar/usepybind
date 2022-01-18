@@ -5,7 +5,7 @@ except ImportError:
 from entity.World import World
 
 
-gr = World()
+gworld = World()
 
 
 def init_world():
@@ -13,7 +13,7 @@ def init_world():
 
 
 def update():
-    gr.update()
+    gworld.update()
 
 
 def print_vector():
@@ -49,3 +49,17 @@ def change_npc_property():
 def load_npc_from_bytes(data):
     npc = pickle.loads(data)
     print("Npc", npc)
+
+
+def run_script(script_content):
+    try:
+        ll = locals()
+        exec(script_content, globals(), ll)
+    except Exception as e:
+        print("exception, ", e)
+        return None
+
+    if 'r' in ll:
+        return ll['r']
+
+    return None

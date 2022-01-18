@@ -127,11 +127,17 @@ PYBIND11_EMBEDDED_MODULE(tester, m) {
 
 int main() {
     using namespace py::literals;
+    PyBindEnv py_bind_env;
+    if (!PyBindEnv::IsOkError(py_bind_env.InitializeInterpreter())) {
+        std::cout<< "py bind env init failed!" << std::endl;
+        return 1;
+    }
 
-    py::scoped_interpreter guard{};
     try {
-        if (!SetupPythonPath()) {
-            printf("init python path failed!\n");
+        const char *script_path = getenv("SCRIPT_PATH");
+        auto py_err_no = py_bind_env.SetupPythonPath(script_path);
+        if (!PyBindEnv::IsOkError(py_err_no)) {
+            printf("init python path failed! py_err_no=%d\n", py_err_no);
             return 1;
         }
 

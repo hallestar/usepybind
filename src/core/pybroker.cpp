@@ -7,12 +7,12 @@
 #include <pybind11/embed.h>
 
 #include "pybroker.h"
+#include "util.h"
 
 namespace py = pybind11;
 
 
-EXPORT bool SetupPythonPath() {
-    const char *script_path = getenv("SCRIPT_PATH");
+EXPORT bool SetupPythonPath(const char *script_path) {
     if (!script_path) {
         return false;
     }
@@ -29,8 +29,7 @@ EXPORT bool SetupPythonPath() {
     return true;
 }
 
-PyBindEnv::ErrCode PyBindEnv::SetupPythonPath() const {
-    const char *script_path = getenv("SCRIPT_PATH");
+PyBindEnv::ErrCode PyBindEnv::SetupPythonPath(const char *script_path) const {
     if (!script_path) {
         return kErrScriptPathNotFound;
     }
@@ -40,9 +39,7 @@ PyBindEnv::ErrCode PyBindEnv::SetupPythonPath() const {
         auto sys_path = sys_module.attr("path");
         auto append = sys_path.attr("append");
         append(script_path);
-    } catch (py::builtin_exception &e) {
-        return ParsePyExceptionToErrorCode(e);
-    }
+    } CATCH_PY_EXEC
 
     return kOk;
 }
@@ -55,9 +52,7 @@ PyBindEnv::ErrCode PyBindEnv::InitializeInterpreter() {
     try {
         py::initialize_interpreter();
         is_initialize_ = true;
-    } catch (py::builtin_exception &e) {
-        return ParsePyExceptionToErrorCode(e);
-    }
+    } CATCH_PY_EXEC
 
     return kOk;
 }
@@ -70,9 +65,7 @@ PyBindEnv::ErrCode PyBindEnv::FinalizeInterpreter() {
     try {
         py::finalize_interpreter();
         is_initialize_ = false;
-    } catch (py::builtin_exception &e) {
-        return ParsePyExceptionToErrorCode(e);
-    }
+    } CATCH_PY_EXEC
 
     return kOk;
 }
@@ -86,22 +79,3 @@ PyBindEnv::~PyBindEnv() {
 PyBindEnv::PyBindEnv()
         : is_initialize_(false) {
 }
-
-PyBindEnv::ErrCode PyBindEnv::ParsePyExceptionToErrorCode(const pybind11::builtin_exception &) const {
-
-    stop_iteration
-    index_error
-    key_error
-    value_error
-    type_error
-    buffer_error
-    import_error
-    attribute_error
-    cast_error
-    reference_cast_error
-
-
-
-    return PyBindEnv::kErrRuntimeError;
-}
-

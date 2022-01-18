@@ -21,7 +21,7 @@ class World(metaclass=Singleton):
 
     def init(self):
         for x in range(1, 100):
-            self._npc = Npc(x)
+            self._npcs[x] = Npc(x)
 
     def get_npc_ids(self):
         return list(self._npcs.keys())
@@ -31,7 +31,7 @@ class World(metaclass=Singleton):
 
     def update(self):
         self._tick_no += 1
-        print("World update world_ptr:{}, cur_tick:{}, npc_cnt:{}".format(id(self), self._tick_no, ))
+        # print("World update world_ptr:{}, cur_tick:{}, npc_cnt:{}".format(id(self), self._tick_no, len(self._npcs)))
 
         for npc in self._npcs.values():
             npc.update()
