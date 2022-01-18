@@ -1,5 +1,5 @@
 macro(add_executable_case executable_name source_files)
-    message("== add_executable_case: ${executable_name} ${source_files}")
+    message("== add executable case: [${executable_name}]")
     add_executable(${executable_name} ${source_files})
 
     set_target_properties(${executable_name}
@@ -18,3 +18,4 @@ endmacro(add_executable_case)
 
 add_subdirectory(embed)
 add_subdirectory(littleone)
+add_subdirectory(invoke_bench)

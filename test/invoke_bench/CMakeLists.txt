@@ -1,0 +1,1 @@
+add_executable_case(invoke_bench invoke_bench.cpp)
