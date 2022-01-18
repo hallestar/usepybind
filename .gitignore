@@ -348,3 +348,4 @@ cython_debug/
 .idea/**/sshConfigs.xml
 .idea/**/webServers.xml
 .idea/.name
+.idea/*

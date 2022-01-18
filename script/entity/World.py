@@ -5,9 +5,9 @@ from Singleton import Singleton
 
 class Npc(object):
 
-    def __init__(self, name, age):
-        self._name = name
-        self._age = age
+    def __init__(self, id):
+        self._name = ''
+        self._age = 10
         self._tick_no = 0
 
     def update(self):
@@ -18,6 +18,13 @@ class World(metaclass=Singleton):
     def __init__(self):
         self._npcs = {}
         self._tick_no = 0
+
+    def init(self):
+        for x in range(1, 100):
+            self._npc = Npc(x)
+
+    def get_npc_ids(self):
+        return list(self._npcs.keys())
 
     def get_npc_by_id(self, npc_id):
         return self._npcs[npc_id] if npc_id in self._npcs else None

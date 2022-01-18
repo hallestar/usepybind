@@ -8,6 +8,10 @@ from entity.World import World
 gr = World()
 
 
+def init_world():
+    World().init()
+
+
 def update():
     gr.update()
 
@@ -45,4 +49,3 @@ def change_npc_property():
 def load_npc_from_bytes(data):
     npc = pickle.loads(data)
     print("Npc", npc)
-

@@ -19,15 +19,13 @@
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
-#define MAX_ENV_VAR_LEN 256
-
 
 namespace py = pybind11;
 
 static std::string GetEntryPath(const char *scriptDir) {
-    auto pathScriptDir = std::filesystem::path(scriptDir);
-    pathScriptDir.append("Entry.py");
-    return pathScriptDir.string();
+    auto script_dir = std::filesystem::path(scriptDir);
+    script_dir.append("Entry.py");
+    return script_dir.string();
 }
 
 void PrintSeperator(const char szSep = '-') {
@@ -132,38 +130,38 @@ int main() {
 
     py::scoped_interpreter guard{};
     try {
-        if (!InitPythonPath()) {
+        if (!SetupPythonPath()) {
             printf("init python path failed!\n");
             return 1;
         }
 
         {
             PrintSeperator();
-            auto testListFunc = []() {
-                auto module = py::module_::import("Entry");
-                auto pyFunc = module.attr("print_vector");
-                pyFunc();
+            auto test_list_func= []() {
+                auto py_module = py::module_::import("Entry");
+                auto py_func = py_module.attr("print_vector");
+                py_func();
             };
-            testListFunc();
+            test_list_func();
         }
 
         {
             PrintSeperator();
-            auto testDictFunc = []() {
-                auto module = py::module_::import("Entry");
-                auto pyFunc = module.attr("print_dict");
-                pyFunc();
+            auto test_dict_func = []() {
+                auto py_module = py::module_::import("Entry");
+                auto py_func = py_module.attr("print_dict");
+                py_func();
             };
-            testDictFunc();
+            test_dict_func();
         }
 
         {
             PrintSeperator();
             auto func = []() {
-                auto module = py::module_::import("Entry");
-                auto pyfunc = module.attr("python_call_cpp_print_list");
-                pyfunc(std::vector<uint32_t>({11000, 2000}));
-                pyfunc(std::vector<float>({0.12312323, 123123.123}));
+                auto py_module = py::module_::import("Entry");
+                auto py_func = py_module.attr("python_call_cpp_print_list");
+                py_func(std::vector<uint32_t>({11000, 2000}));
+                py_func(std::vector<float>({0.12312323, 123123.123}));
             };
             func();
         }
@@ -171,20 +169,20 @@ int main() {
         {
             PrintSeperator();
             auto func = []() {
-                auto module = py::module_::import("Entry");
-                auto pyfunc = module.attr("python_call_cpp_print_dict");
-                pyfunc(std::map<uint32_t, uint32_t>(
+                auto py_module = py::module_::import("Entry");
+                auto py_func = py_module.attr("python_call_cpp_print_dict");
+                py_func(std::map<uint32_t, uint32_t>(
                         {
                                 {11000, 100},
                                 {22222, 400000},
                         }));
-                pyfunc(std::map<std::string, std::string>(
+                py_func(std::map<std::string, std::string>(
                         {
                                 {"kaaaaaaaaa", "kbbbbbbbbb"},
                                 {"kccccccccc", "kddddddddd"}
                         }));
                 auto pydict = py::dict("obj_name"_a = "name", "obj_cnt"_a = 100);
-                pyfunc(pydict);
+                py_func(pydict);
             };
             func();
         }
@@ -192,11 +190,11 @@ int main() {
         {
             PrintSeperator();
             auto func = []() {
-                auto module = py::module_::import("Entry");
-                auto pyfuncChangeNpcProp = module.attr("change_npc_property");
-                auto npcData = pyfuncChangeNpcProp();
-                auto pyfuncLoadNpc = module.attr("load_npc_from_bytes");
-                pyfuncLoadNpc(npcData);
+                auto py_module = py::module_::import("Entry");
+                auto py_func_change_npc_prop = py_module.attr("change_npc_property");
+                auto npc_data = py_func_change_npc_prop();
+                auto py_func_load_npc = py_module.attr("load_npc_from_bytes");
+                py_func_load_npc(npc_data);
             };
             func();
         }

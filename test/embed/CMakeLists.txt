@@ -1,4 +1,4 @@
-add_executable(test_embbed embbed.cpp)
+add_executable(test_embbed case_embed.cpp)
 
 set_property(TARGET test_embbed PROPERTY CXX_STANDARD 17)
 
