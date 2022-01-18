@@ -4,11 +4,10 @@ project(trypybind)
 
 set(PYBIND11_FINDPYTHON ON)
 
-find_package(
-        Python3
-        COMPONENTS
-        Interpreter Development
-        REQUIRED)
+find_package(Python3
+             COMPONENTS
+             Interpreter Development
+             REQUIRED)
 
 add_subdirectory(thirdparty/pybind11)
 
@@ -30,17 +29,37 @@ set(PLUGIN_NAME pybroker)
 
 #pybind11_add_module(${PLUGIN_NAME} ${SOURCE_FILES})
 add_library(${PLUGIN_NAME}
-        SHARED
-        ${SOURCE_FILES})
+            SHARED
+            ${SOURCE_FILES})
 #target_include_directories(${PLUGIN_NAME} PUBLIC ${CMAKE_BINARY_DIR}/)
 
 
-#set_property(TARGET ${PLUGIN_NAME} PROPERTY CXX_STANDARD 17)
 set_target_properties(${PLUGIN_NAME} PROPERTIES CXX_STANDARD 17)
-set_target_properties(${PLUGIN_NAME} PROPERTIES COMPILE_FLAGS "-DEFIMPL")
+set_target_properties(${PLUGIN_NAME} PROPERTIES COMPILE_FLAGS "-DLDIMPL")
+
 
 target_link_libraries(${PLUGIN_NAME}
         PRIVATE pybind11::embed)
+
+include(CMakePackageConfigHelpers)
+
+
+install(TARGETS ${PLUGIN_NAME}
+        EXPORT ${PLUGIN_NAME}Targets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        )
+
+install(EXPORT ${PLUGIN_NAME}Targets
+        FILE ${PLUGIN_NAME}Targets.cmake
+        NAMESPACE ${PLUGIN_NAME}::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PLUGIN_NAME}
+        )
+
+install(FILES src/core/pybroker.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 
 add_subdirectory(test)
 

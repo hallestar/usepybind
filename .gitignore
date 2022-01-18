@@ -8,8 +8,7 @@
 
 # Compiled Object files
 *.slo
-*.lo
-*.o
+*.lo *.o
 *.obj
 
 # Precompiled Headers
@@ -348,3 +347,4 @@ cython_debug/
 .idea/**/deployment.xml
 .idea/**/sshConfigs.xml
 .idea/**/webServers.xml
+.idea/.name
