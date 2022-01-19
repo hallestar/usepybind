@@ -22,6 +22,8 @@
 
 namespace py = pybind11;
 
+using namespace pyutil;
+
 static std::string GetEntryPath(const char *scriptDir) {
     auto script_dir = std::filesystem::path(scriptDir);
     script_dir.append("Entry.py");

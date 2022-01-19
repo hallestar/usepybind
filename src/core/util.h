@@ -4,7 +4,11 @@
 #include <chrono>
 #include <string>
 
+#include "common.h"
+
 #define CHRONO std::chrono
+
+PYUTIL_NAMESPACE_BEGIN
 
 class StopWatch {
 
@@ -49,5 +53,7 @@ private:
     std::string name_;
     uint32_t cnt_;
 };
+
+PYUTIL_NAMESPACE_END
 
 #endif //TRYPYBIND_UTIL_H

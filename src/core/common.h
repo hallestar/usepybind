@@ -1,0 +1,8 @@
+
+#ifndef TRYPYBIND_COMMON_H
+#define TRYPYBIND_COMMON_H
+
+#define PYUTIL_NAMESPACE_BEGIN namespace pyutil {
+#define PYUTIL_NAMESPACE_END   }
+
+#endif //TRYPYBIND_COMMON_H

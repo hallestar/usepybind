@@ -1,1 +1,5 @@
 #include "util.h"
+
+PYUTIL_NAMESPACE_BEGIN
+
+PYUTIL_NAMESPACE_END

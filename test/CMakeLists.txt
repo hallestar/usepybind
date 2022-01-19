@@ -1,8 +1,8 @@
-macro(add_executable_case executable_name source_files)
-    message("== add executable case: [${executable_name}]")
-    add_executable(${executable_name} ${source_files})
+macro(add_executable_case EXECUTABLE_NAME SOURCE_FILES)
+    message("== add executable case: [${EXECUTABLE_NAME}]")
+    add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
-    set_target_properties(${executable_name}
+    set_target_properties(${EXECUTABLE_NAME}
                           PROPERTIES CXX_STANDARD 17
                           COMPILE_DEFINITIONS BUILDER_STATIC_DEFINE)
 
@@ -10,7 +10,7 @@ macro(add_executable_case executable_name source_files)
 
     link_directories(${CMAKE_BINARY_DIR})
 
-    target_link_libraries(${executable_name}
+    target_link_libraries(${EXECUTABLE_NAME}
                           PUBLIC ${PLUGIN_NAME}
                           PRIVATE pybind11::embed)
 

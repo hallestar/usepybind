@@ -7,6 +7,8 @@
 
 namespace py = pybind11;
 
+using namespace pyutil;
+
 int main() {
     PyBindEnv py_bind_env;
     if (!PyBindEnv::IsOkError(py_bind_env.InitializeInterpreter())) {

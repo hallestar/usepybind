@@ -11,6 +11,8 @@
 
 namespace py = pybind11;
 
+PYUTIL_NAMESPACE_BEGIN
+
 
 EXPORT bool SetupPythonPath(const char *script_path) {
     if (!script_path) {
@@ -79,3 +81,6 @@ PyBindEnv::~PyBindEnv() {
 PyBindEnv::PyBindEnv()
         : is_initialize_(false) {
 }
+
+
+PYUTIL_NAMESPACE_END

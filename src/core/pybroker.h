@@ -3,6 +3,8 @@
 
 #include <pybind11/pybind11.h>
 
+#include "common.h"
+
 
 #if(defined WIN32 || defined _WIN32) && defined LDIMPL
 #define EXPORT __declspec(dllexport)
@@ -10,6 +12,7 @@
 #define EXPORT
 #endif
 
+PYUTIL_NAMESPACE_BEGIN
 
 // 管理pybind11定义的python解释器的
 // 在调用任何python相关代码之前,须显示调用InitializeInterpreter进行解释器初始化
@@ -88,5 +91,6 @@ private:
         return PyBindEnv::py_errno;                 \
     }
 
+PYUTIL_NAMESPACE_END
 
 #endif //TRYPYBIND_PYBROKER_H
