@@ -66,16 +66,21 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
 #            )
 #endif()
 
+#get_target_properties(mylib PROPERTIES SUFFIX ".dla")
+message(STATUS "LIB_EXTENSION:${LIB_EXTENSION} PLUGIN_NAME: ${PLUGIN_NAME} SUFFIX: ${SUFFIX}")
+get_target_property(LIB_EXTENSION ${PLUGIN_NAME} SUFFIX)
+message(STATUS "LIB_EXTENSION: ${LIB_EXTENSION}")
+
 add_custom_command(TARGET ${PLUGIN_NAME}
         PRE_BUILD
         WORKING_DIRECTORY ${THIRD_DIR}/benchmark
         COMMAND ${CMAKE_COMMAND} -E echo "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
         COMMAND ${CMAKE_COMMAND} -E make_directory "build"
         COMMAND ${CMAKE_COMMAND} -E chdir "build" "${CMAKE_COMMAND}" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
-        COMMAND ${CMAKE_COMMAND} --build "build" --config ${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} --build "build" --config ${CMAKE_BUILD_TYPE})
         # copy
-        COMMAND ${CMAKE_COMMAND} -E make_directory "lib"
-        COMMAND ${CMAKE_COMMAND} -E copy build/src/*.a "lib")
+#        COMMAND ${CMAKE_COMMAND} -E make_directory "lib"
+#        COMMAND ${CMAKE_COMMAND} -E copy build/src/*.${LIB_EXTENSION} "lib")
 
 add_subdirectory(thirdparty/benchmark)
 
@@ -107,3 +112,8 @@ install(FILES src/core/pybroker.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 add_subdirectory(test)
 
 
+# ================================= run benchmark =================================
+# track memory
+
+
+# ================================= run test =================================

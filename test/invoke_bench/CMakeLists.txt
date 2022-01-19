@@ -7,6 +7,9 @@ set_target_properties(${EXECUTABLE_NAME}
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+#add_subdirectory(${THIRD_DIR}/benchmark/googletest/)
+#find_package(GTest CONFIG REQUIRED)
+
 link_directories(${CMAKE_BINARY_DIR})
 
 target_link_libraries(${EXECUTABLE_NAME}

@@ -8,6 +8,17 @@ from entity.World import World
 gworld = World()
 
 
+test_var_for_export = 1
+
+
+def empty_call():
+    pass
+
+
+def get_test_var_for_export():
+    return test_var_for_export
+
+
 def init_world():
     World().init()
 
