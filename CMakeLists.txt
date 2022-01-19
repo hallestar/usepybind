@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4...3.18)
+cmake_minimum_required(VERSION 3.11)
 
 project(trypybind)
 
@@ -41,29 +41,40 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES CXX_STANDARD 17)
 set_target_properties(${PLUGIN_NAME} PROPERTIES COMPILE_FLAGS "-DLDIMPL")
 
 # 构建benchmark
-include(ExternalProject)
+include(FetchContent)
 
-ExternalProject_Add(
-        googletest
-        URL https://github.com/google/googletest/archive/release-1.11.0.zip
-        PREFIX ${THIRD_DIR}/benchmark/googletest
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${THIRD_DIR}/benchmark/build -DBUILD_SHARED_LIBS=OFF
-)
-add_dependencies(3party googletest)
+set(GOOGLETEST_GIT_URL https://github.com/google/googletest.git)
+set(GOOGLETEST_GIG_TAG release-1.11.0)
+
+configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download"
+        )
+execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download"
+        )
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+        "${CMAKE_BINARY_DIR}/googletest-build"
+        )
+if(CMAKE_VERSION VERSION_LESS 2.8.11)
+    include_directories("${gtest_SOURCE_DIR}/include"
+            "${gmock_SOURCE_DIR}/include"
+            )
+endif()
 
 add_custom_command(TARGET ${PLUGIN_NAME}
         PRE_BUILD
         WORKING_DIRECTORY ${THIRD_DIR}/benchmark
         COMMAND ${CMAKE_COMMAND} -E echo "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
         COMMAND ${CMAKE_COMMAND} -E make_directory "build"
-#        COMMAND ${CMAKE_COMMAND} -E chdir "build" cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release ../)
         COMMAND ${CMAKE_COMMAND} -E chdir "build" "${CMAKE_COMMAND}" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
-        COMMAND ${CMAKE_COMMAND} --build "build" --config Release
-#        # copy
+        COMMAND ${CMAKE_COMMAND} --build "build" --config ${CMAKE_BUILD_TYPE}
+        # copy
         COMMAND ${CMAKE_COMMAND} -E make_directory "lib"
         COMMAND ${CMAKE_COMMAND} -E copy build/src/*.a "lib")
 
-#add_subdirectory(thirdparty/benchmark)
+add_subdirectory(thirdparty/benchmark)
 
 link_directories(${THIRD_DIR}/benchmark/lib/)
 

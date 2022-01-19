@@ -38,7 +38,7 @@ public:
     }
 
     void Increment() {
-        cnt_;
+        ++cnt_;
     }
 
     inline uint32_t GetCount() const {
