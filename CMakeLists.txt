@@ -46,6 +46,9 @@ include(FetchContent)
 set(GOOGLETEST_GIT_URL https://github.com/google/googletest.git)
 set(GOOGLETEST_GIG_TAG release-1.11.0)
 
+# 因为需要将thirdparty/benchmark加入子目录
+# 所以gtest必须在configure期间就下载好，不然benchmark不能通过configure
+# https://crascit.com/2015/07/25/cmake-gtest/
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download"
@@ -57,11 +60,11 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
         "${CMAKE_BINARY_DIR}/googletest-build"
         )
-if(CMAKE_VERSION VERSION_LESS 2.8.11)
-    include_directories("${gtest_SOURCE_DIR}/include"
-            "${gmock_SOURCE_DIR}/include"
-            )
-endif()
+#if(CMAKE_VERSION VERSION_LESS 2.8.11)
+#    include_directories("${gtest_SOURCE_DIR}/include"
+#            "${gmock_SOURCE_DIR}/include"
+#            )
+#endif()
 
 add_custom_command(TARGET ${PLUGIN_NAME}
         PRE_BUILD
